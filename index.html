@@ -1,221 +1,724 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Azk-dev | Developer</title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+<html lang="es" class="scroll-smooth">
 
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
-    <!--Replace with your tailwind.css once created-->
-    <link href="https://unpkg.com/@tailwindcss/custom-forms/dist/custom-forms.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AzkOsDev</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="shortcut icon" href="./assets/images/Favicon.png" type="image/x-icon">
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
-
-      html {
-        font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-      }
-    </style>
-  </head>
-
-  <body class="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed" style="background-image: url('./assets/images/header.jpg');">
-    <div class="h-full">
-      <!--Nav-->
-      <div class="w-full container mx-auto">
-        <div class="w-full flex items-center justify-between py-4">
-
-          <!-- Nombre -->
-          <a class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-            Azk-<span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">dev</span>
-          </a>
-
-          <!-- Íconos + botón idioma -->
-          <div class="flex items-center space-x-4">
-
-            <!-- Botón de idioma -->
-            <button id="languageToggle"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gray-800 to-gray-700 text-white font-semibold rounded-full
-                    shadow-md hover:from-gray-700 hover:to-gray-600 hover:scale-105 hover:shadow-lg
-                    transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span id="languageIcon">🇺🇸</span>
-              <span id="languageLabel">English</span>
-            </button>
-
-            <!-- Twitter -->
-            <a href="https://x.com/AzK_dev" target="_blank"
-              class="group text-white hover:text-blue-400 transition transform hover:scale-125 duration-300">
-              <i class="fab fa-twitter fa-lg"></i>
-            </a>
-
-            <!-- LinkedIn -->
-            <a href="https://linkedin.com/in/santiago-camacho-parra-00843b275" target="_blank"
-              class="group text-white hover:text-blue-500 transition transform hover:scale-125 duration-300">
-              <i class="fab fa-linkedin fa-lg"></i>
-            </a>
-
-            <!-- GitHub -->
-            <a href="https://github.com/AzK-os-dev" target="_blank"
-              class="group text-white hover:text-gray-400 transition transform hover:scale-125 duration-300">
-              <i class="fab fa-github fa-lg"></i>
-            </a>
-
-          </div>
-
-        </div>
-      </div>
-
-
-      <!--Main-->
-      <div class="container pt-24 md:pt-36 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-        <!--Left Col-->
-        <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
-          <h1 class="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
-            <span data-i18n="welcome" class="i18n-text">¡Hola! Qué bueno verte por aquí. Soy </span>
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">Santiago.!</span>
-          </h1>
-
-          <p data-i18n="description" class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
-            Desarrollador web y analista en ciberseguridad. Siéntete libre de recorrer mi sitio y conocer más sobre lo que hago.
-          </p>
-          
-
-
-          <form class="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
-              <label data-i18n="feedback" class="block text-blue-300 py-2 font-bold mb-2" for="emailaddress">
-                ¿Qué mejorarías de este sitio? Tu feedback me ayuda a crecer.
-              </label>
-
-              <input data-i18n="input"
-                class="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                id="emailaddress"
-                type="text"
-                placeholder="Escribir Mensaje..."
-              />
-            </div>
-
-            <div class="flex items-center justify-between pt-4">
-              <button data-i18n="enviar"
-                class="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
-                type="button"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!--Right Col-->
-        <div class="w-full xl:w-3/5 p-12 overflow-hidden">
-          <img
-            src="./assets/images/macbook.png"
-            alt="MacBook Preview"
-            class="mx-auto w-full md:w-4/5 rounded-xl border-4 border-gray-100 
-                  transform -rotate-6 transition hover:scale-105 hover:rotate-6 duration-700 ease-in-out"
-          />
-        </div>
-
-
-        <div class="mx-auto md:pt-16">
-          <p data-i18n="des" class="text-blue-400 font-bold pb-8 lg:pb-6 text-center">
-            Descubre quién soy, qué hago y cómo puedo aportar a tus proyectos.
-          </p>
-
-          <div class="flex w-full justify-center pb-24 lg:pb-0 fade-in space-x-6">
-            <!-- Botón Inicio -->
-            <a href="home.html"
-              class="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg shadow-md 
-                      hover:bg-gray-700 hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
-              <i class="fas fa-home mr-2"></i>
-            </a>
-
-            <!-- Botón En desarrollo
-            <a href="#proximamente"
-              class="inline-flex items-center px-6 py-3 bg-gray-700 text-white font-semibold rounded-lg shadow-md 
-                      hover:bg-gray-600 hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out">
-              <i class="fas fa-tools mr-2"></i>
-              En desarrollo
-            </a>-->
-          </div>
-
-
-        </div>
-
-        <!--Footer-->
-        <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
-          <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2020</a>
-          | Template by
-          <a class="text-gray-500 no-underline hover:no-underline" href="https://www.tailwindtoolbox.com">TailwindToolbox.com</a>
-        </div>
-      </div>
-    </div>
-
-  <script>
-    const translations = {
-      es: {
-        welcome: "¡Hola! Qué bueno verte por aquí. Soy",
-        description: 'Desarrollador web y analista en ciberseguridad. Siéntete libre de recorrer mi sitio y conocer más sobre lo que hago. <img src="https://em-content.zobj.net/thumbs/240/apple/354/winking-face_1f609.png" alt="😉" class="inline w-6 h-6 align-middle" />',
-        label: "English",
-        icon: "🇺🇸",
-        feedback: "¿Qué mejorarías de este sitio? Tu feedback me ayuda a crecer.",
-        input: "Escribir Mensaje...",
-        enviar: "Enviar",
-        des: "Descubre quién soy, qué hago y cómo puedo aportar a tus proyectos.",
-
-
-      },
-      en: {
-        welcome: "Hi! Great to see you here. I'm",
-        description: 'Web developer and cybersecurity analyst. Feel free to explore my site and learn more about what I do. <img src="https://em-content.zobj.net/thumbs/240/apple/354/winking-face_1f609.png" alt="😉" class="inline w-6 h-6 align-middle" />',
-        label: "Español",
-        icon: "🇪🇸",
-        feedback: "What would you improve on this site? Your feedback helps me grow.",
-        input: "Type your message...",
-        enviar: "Send",
-        des: "Discover who I am, what I do, and how I can contribute to your projects.",
-      }
-    };
-
-    let currentLang = localStorage.getItem("lang") || "es";
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem("lang", lang);
-
-      // Cambiar textos según data-i18n
-      document.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        const translation = translations[lang][key];
-
-        if (!translation) return;
-
-        if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          el.placeholder = translation;
-        } else {
-          el.innerHTML = translation;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        body: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    colors: {
+                        base: '#0B0D10',
+                        raised: '#121519',
+                        accent: '#E2703D',
+                    },
+                    maxWidth: { content: '72rem' },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(12px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp .8s cubic-bezier(.2,.7,.3,1) both',
+                    },
+                }
+            }
         }
-      });
+    </script>
+</head>
 
-      // Botón de idioma
-      document.getElementById("languageIcon").innerText = translations[lang].icon;
-      document.getElementById("languageLabel").innerText = translations[lang].label;
-    }
+<body class="font-body bg-base text-white antialiased">
 
-    document.addEventListener("DOMContentLoaded", () => {
-      setLanguage(currentLang);
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-base/90 backdrop-blur-md border-b border-white/10 z-50">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="#inicio" class="font-display font-semibold text-lg tracking-tight text-white">
+                    Santiago Camacho Parra <span class="text-white/40 font-mono text-sm font-normal">/ AzkOsDev</span>
+                </a>
 
-      document.getElementById("languageToggle").addEventListener("click", () => {
-        const nextLang = currentLang === "es" ? "en" : "es";
-        setLanguage(nextLang);
-      });
-    });
-  </script>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-white" aria-label="Abrir menú">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
 
-  </body>
+                <ul class="hidden md:flex items-center gap-8">
+                    <li><a href="#inicio" class="path-link font-mono text-[13px] text-white border-b border-accent pb-1"
+                            data-path>inicio</a></li>
+                    <li><a href="#habilidades"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>habilidades</a></li>
+                    <li><a href="#educacion"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>educacion</a></li>
+                    <li><a href="#experiencia"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>experiencia</a></li>
+                    <li><a href="#proyectos"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>proyectos</a></li>
+                    <li><a href="#contacto"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>contacto</a></li>
+                </ul>
+            </div>
+
+            <div id="mobile-menu" class="md:hidden hidden border-t border-white/10 py-4">
+                <ul class="space-y-4 font-mono text-sm">
+                    <li><a href="#inicio" class="block text-white/60 hover:text-white">inicio</a></li>
+                    <li><a href="#habilidades" class="block text-white/60 hover:text-white">habilidades</a></li>
+                    <li><a href="#educacion" class="block text-white/60 hover:text-white">educacion</a></li>
+                    <li><a href="#experiencia" class="block text-white/60 hover:text-white">experiencia</a></li>
+                    <li><a href="#proyectos" class="block text-white/60 hover:text-white">proyectos</a></li>
+                    <li><a href="#contacto" class="block text-white/60 hover:text-white">contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="inicio"
+        class="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden
+        bg-[linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] bg-[size:44px_44px]">
+
+        <div class="max-w-content mx-auto px-5 sm:px-8 w-full">
+            <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-16 items-center">
+
+                <div class="animate-fade-up motion-reduce:animate-none">
+                    <p class="font-mono text-sm text-accent mb-4">~/inicio</p>
+                    <h1
+                        class="font-display font-semibold text-4xl md:text-5xl lg:text-[3.4rem] leading-[1.08] text-white mb-6">
+                        Construyo software en Python y Django,<br class="hidden md:block"> y después lo someto a prueba.
+                    </h1>
+                    <p class="text-lg text-white/55 leading-relaxed max-w-md mb-10">
+                        Desarrollador web enfocado en aplicaciones robustas y escalables, con formación
+                        en ciberseguridad ofensiva. Diseño, construyo y audito: entiendo cómo se
+                        levanta un sistema porque también sé cómo se rompe.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="#proyectos"
+                            class="inline-flex items-center justify-center gap-2.5 font-display font-semibold text-sm px-7 py-3.5 rounded-md bg-white text-base hover:bg-accent hover:text-white transition-colors">
+                            <i class="fas fa-code"></i> Ver proyectos
+                        </a>
+                        <a href="#contacto"
+                            class="inline-flex items-center justify-center gap-2.5 font-display font-semibold text-sm px-7 py-3.5 rounded-md border border-white/20 text-white hover:border-white/50 transition-colors">
+                            <i class="fas fa-envelope"></i> Contactar
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex justify-center lg:justify-end animate-fade-up motion-reduce:animate-none"
+                    style="animation-delay:.15s">
+                    <div class="w-full max-w-sm rounded-xl border border-white/10 bg-white/[0.03] p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-14 h-14 rounded-md border border-white/15 bg-white/5 overflow-hidden flex items-center justify-center font-display font-semibold text-white flex-shrink-0">
+                                <img src="assets/images/cara.jpeg" alt="Foto de perfil"
+                                    class="w-full h-full object-cover"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                <span class="hidden">SC</span>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-semibold text-white leading-tight">Santiago Camacho Parra
+                                </h3>
+                                <p class="text-sm text-white/50">Web Developer — Pentester</p>
+                            </div>
+                        </div>
+
+                        <dl class="border-t border-white/10 divide-y divide-white/10">
+                            <div class="flex items-center justify-between py-3">
+                                <dt class="font-mono text-xs text-white/40">Stack</dt>
+                                <dd class="font-mono text-sm text-white/85">Python · Django</dd>
+                            </div>
+                            <div class="flex items-center justify-between py-3">
+                                <dt class="font-mono text-xs text-white/40">Sistema</dt>
+                                <dd class="font-mono text-sm text-white/85">Linux</dd>
+                            </div>
+                            <div class="flex items-center justify-between py-3">
+                                <dt class="font-mono text-xs text-white/40">Ubicación</dt>
+                                <dd class="font-mono text-sm text-white/85">Huila, Colombia</dd>
+                            </div>
+                            <div class="flex items-center justify-between py-3">
+                                <dt class="font-mono text-xs text-white/40">Modalidad</dt>
+                                <dd class="font-mono text-sm text-white/85">Remoto / híbrido</dd>
+                            </div>
+                        </dl>
+
+                        <div class="flex items-center gap-2.5 mt-5 pt-5 border-t border-white/10 text-sm text-white/80">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Fundador de<a href="https://azkcore.tech"><strong>www.azkcore.tech </strong></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="habilidades" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/habilidades</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-4 max-w-xl">
+                Lo que uso para construir y para auditar
+            </h2>
+            <p class="text-white/50 max-w-lg mb-14">
+                Dos caras del mismo oficio: levantar aplicaciones y luego revisarlas con
+                mentalidad de atacante.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-16">
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-8">
+                    <i class="fab fa-python text-2xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Python & Django</h3>
+                    <p class="text-white/50 text-sm leading-relaxed">
+                        Desarrollo de aplicaciones web robustas y escalables utilizando Django como
+                        framework principal, aprovechando su enfoque en seguridad y arquitectura modular.
+                    </p>
+                </div>
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-8">
+                    <i class="fas fa-database text-2xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Bases de datos</h3>
+                    <p class="text-white/50 text-sm leading-relaxed">
+                        Diseño y optimización de bases de datos relacionales con MySQL, garantizando
+                        la integridad de los datos y consultas eficientes para aplicaciones de alto rendimiento.
+                    </p>
+                </div>
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-8">
+                    <i class="fas fa-terminal text-2xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Administración de sistemas</h3>
+                    <p class="text-white/50 text-sm leading-relaxed">
+                        Experiencia en entornos Linux, automatización con scripts Bash/Zsh, y gestión
+                        de servidores para optimizar procesos y mejorar la productividad.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-x-14 gap-y-7 max-w-3xl">
+                <div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-medium text-white flex items-center gap-2"><i class="fab fa-linux"></i>
+                            Linux</span>
+                        <span class="font-mono text-xs text-white/40">intermedio</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div class="signal-fill h-full bg-accent rounded-full w-0 transition-all duration-1000 ease-out"
+                            data-width="90%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-medium text-white flex items-center gap-2"><i class="fab fa-python"></i>
+                            Django</span>
+                        <span class="font-mono text-xs text-white/40">intermedio alto</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div class="signal-fill h-full bg-accent rounded-full w-0 transition-all duration-1000 ease-out"
+                            data-width="80%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-medium text-white flex items-center gap-2"><i class="fas fa-database"></i>
+                            MySQL</span>
+                        <span class="font-mono text-xs text-white/40">intermedio</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div class="signal-fill h-full bg-accent rounded-full w-0 transition-all duration-1000 ease-out"
+                            data-width="85%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-medium text-white flex items-center gap-2"><i class="fab fa-html5"></i>
+                            HTML/CSS</span>
+                        <span class="font-mono text-xs text-white/40">bajo intermedio</span>
+                    </div>
+                    <div class="h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div class="signal-fill h-full bg-accent rounded-full w-0 transition-all duration-1000 ease-out"
+                            data-width="75%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section id="educacion" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/educacion</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+                Formación que respalda la práctica
+            </h2>
+
+            <div class="max-w-3xl space-y-6">
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] p-7 flex flex-col md:flex-row md:items-center gap-6">
+                    <div
+                        class="w-11 h-11 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-display font-semibold text-white mb-1">Tecnólogo en Análisis y Desarrollo de
+                            Sistemas de Información</h3>
+                        <p class="text-accent text-sm font-medium mb-2">SENA — Servicio Nacional de Aprendizaje</p>
+                        <p class="text-white/50 text-sm leading-relaxed">
+                            Formación integral en desarrollo de software, análisis de sistemas, bases de datos y
+                            metodologías ágiles.
+                        </p>
+                    </div>
+                    <span
+                        class="font-mono text-xs text-emerald-400 border border-emerald-400/25 bg-emerald-400/5 px-3 py-1.5 rounded flex items-center gap-1.5 flex-shrink-0 self-start md:self-center">
+                        <i class="fas fa-check"></i> completado
+                    </span>
+                </div>
+
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] p-7 flex flex-col md:flex-row md:items-center gap-6">
+                    <div
+                        class="w-11 h-11 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-display font-semibold text-white mb-1">Técnico en Sistemas</h3>
+                        <p class="text-accent text-sm font-medium mb-2">SENA — Servicio Nacional de Aprendizaje</p>
+                        <p class="text-white/50 text-sm leading-relaxed">
+                            Fundamentos en mantenimiento de equipos, redes, instalación de software y soporte técnico
+                            especializado.
+                        </p>
+                    </div>
+                    <span
+                        class="font-mono text-xs text-emerald-400 border border-emerald-400/25 bg-emerald-400/5 px-3 py-1.5 rounded flex items-center gap-1.5 flex-shrink-0 self-start md:self-center">
+                        <i class="fas fa-check"></i> completado
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experiencia" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/experiencia</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+                Trayectoria profesional
+            </h2>
+
+            <div class="max-w-3xl border-l border-white/15 pl-8 space-y-14">
+                <div>
+                    <div class="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2 mb-3">
+                        <h3 class="font-display font-semibold text-lg text-white">Prácticas como Desarrollador de
+                            Software</h3>
+                        <span class="font-mono text-xs text-white/40 whitespace-nowrap">2025 — 2025/6 · 6 meses</span>
+                    </div>
+                    <p class="text-accent text-sm font-medium mb-3">Empresa pública</p>
+                    <p class="text-white/50 text-sm leading-relaxed mb-4">
+                        Desarrollo de una plataforma completa de gestión documental utilizando Django como framework
+                        principal.
+                        La aplicación incluye funcionalidades avanzadas de administración de archivos y control de
+                        versiones.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">django</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">python</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">html/css</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">bulma
+                            css</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2 mb-3">
+                        <h3 class="font-display font-semibold text-lg text-white">Administrador de Sistemas</h3>
+                        <span class="font-mono text-xs text-white/40 whitespace-nowrap">2025/8 — 2026/7 · 11
+                            meses</span>
+                    </div>
+                    <p class="text-accent text-sm font-medium mb-3">Empugar ESP</p>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Responsable del manejo del sistema comercial de la empresa, vinculado con clientes.
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-tools text-white/40 w-4"></i> Administración de sistemas</div>
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-headset text-white/40 w-4"></i> Soporte a usuarios</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2 mb-3">
+                        <h3 class="font-display font-semibold text-lg text-white">Soporte Técnico</h3>
+                        <span class="font-mono text-xs text-white/40 whitespace-nowrap">2022/6 — 2023 · 6 Meses</span>
+                    </div>
+                    <p class="text-accent text-sm font-medium mb-3">Escuela pública</p>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Responsable del mantenimiento integral de equipos de cómputo, instalación y configuración de
+                        software
+                        educativo, implementación de redes locales y soporte técnico especializado a docentes y
+                        estudiantes.
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-tools text-white/40 w-4"></i> Mantenimiento de equipos</div>
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-network-wired text-white/40 w-4"></i> Configuración de redes</div>
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-download text-white/40 w-4"></i> Instalación de software</div>
+                        <div class="flex items-center gap-2.5 text-sm text-white/80"><i
+                                class="fas fa-headset text-white/40 w-4"></i> Soporte a usuarios</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="proyectos" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/proyectos</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+                Proyectos construidos y auditados
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-5">
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-file-alt text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Sistema de Gestión Documental —
+                        Empugar</h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Aplicación web desarrollada para optimizar el flujo de inventario y la gestión documental en
+                        entidades públicas. Incluye un administrador de archivos tipo file manager que permite organizar
+                        carpetas, registrar documentos por categorías y mantener el control de versiones de forma
+                        centralizada.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">django</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">python</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">bulma
+                            css</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">mysql</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span class="font-mono text-xs text-white/40 flex items-center gap-2"><i
+                                class="fas fa-lock"></i> código reservado</span>
+                        <a href="empugar.html"
+                            class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5">
+                            <i class="fas fa-file-alt"></i> ver informe
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-comments text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Foro de Noticias</h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Plataforma de comunicación especializada en gaming y hacking, con sistema de registro,
+                        autenticación, comentarios y publicación de contenido por parte de los usuarios.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">django</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">html</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">tailwind
+                            css</span>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-calendar-check text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">Citas Médicas</h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Sistema de gestión de citas donde los empleados pueden solicitarlas, los médicos pueden
+                        aprobarlas o reasignarlas, y se notifican por correo los cambios. Incluye una agenda visual
+                        tipo calendario.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">django</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">html</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">tailwind
+                            css</span>
+                    </div>
+                </div>
+
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-shield-alt text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">ZWAR — Herramienta de Ciberseguridad
+                    </h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Plataforma educativa que permite a usuarios sin experiencia realizar escaneos de puertos y
+                        pruebas de penetración en entornos controlados, facilitando el aprendizaje práctico en
+                        ciberseguridad.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">django</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">python</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">tailwind
+                            css</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">security
+                            tools</span>
+                    </div>
+                    <a href="https://github.com/AsTEKA01/ZWAR"
+                        class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5 pt-4 border-t border-white/10">
+                        <i class="fab fa-github"></i> ver código
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contacto" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/contacto</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+                Hablemos de tu proyecto
+            </h2>
+
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-8">
+                    <h3 class="font-display font-semibold text-xl text-white mb-8">Información de contacto</h3>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-11 h-11 rounded-md bg-white text-base flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-white/40">nombre</p>
+                                <p class="text-white font-medium">Santiago Camacho Parra</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-11 h-11 rounded-md bg-white text-base flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-white/40">teléfono</p>
+                                <p class="text-white font-medium">+57 321 457 315</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-11 h-11 rounded-md bg-white text-base flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-white/40">email</p>
+                                <p class="text-white font-medium">snatiago128@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-11 h-11 rounded-md bg-white text-base flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-white/40">ubicación</p>
+                                <p class="text-white font-medium">Garzón, Huila — Colombia</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-white/10">
+                        <p class="font-mono text-xs text-white/40 mb-4">sígueme en</p>
+                        <div class="flex gap-3">
+                            <a href="https://github.com/AzK-os-dev"
+                                class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white hover:border-accent hover:text-accent transition-colors"><i
+                                    class="fab fa-github"></i></a>
+                            <a href="https://www.linkedin.com/in/santiago-camacho-parra-00843b275"
+                                class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white hover:border-accent hover:text-accent transition-colors"><i
+                                    class="fab fa-linkedin"></i></a>
+                            <a href="https://x.com/AzK_dev"
+                                class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white hover:border-accent hover:text-accent transition-colors"><i
+                                    class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-8">
+                    <h3 class="font-display font-semibold text-xl text-white mb-8">¿Por qué trabajar conmigo?</h3>
+
+                    <div class="space-y-7">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-white mb-1">Enfoque en resultados</h4>
+                                <p class="text-white/50 text-sm">Desarrollo soluciones que generan valor real para tu
+                                    negocio.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-white mb-1">Código seguro y limpio</h4>
+                                <p class="text-white/50 text-sm">Escribo código mantenible siguiendo las mejores
+                                    prácticas.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-white mb-1">Entrega puntual</h4>
+                                <p class="text-white/50 text-sm">Respeto los tiempos acordados y mantengo comunicación
+                                    constante.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 rounded-md border border-white/15 flex items-center justify-center text-white flex-shrink-0">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-white mb-1">Soporte continuo</h4>
+                                <p class="text-white/50 text-sm">Ofrezco mantenimiento y mejoras posteriores al
+                                    desarrollo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="mailto:azk.os.dev@gmail.com"
+                        class="mt-9 w-full inline-flex items-center justify-center gap-2.5 font-display font-semibold text-sm px-7 py-3.5 rounded-md bg-white text-base hover:bg-accent hover:text-white transition-colors">
+                        <i class="fas fa-paper-plane"></i> Enviar mensaje
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-14 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8 text-center">
+            <h3 class="font-display font-semibold text-xl text-white mb-2">Santiago Camacho Parra <span
+                    class="font-mono text-sm font-normal text-white/40">/ AzkOsDev</span></h3>
+            <p class="text-white/40 text-sm mb-8">Desarrollador Web especializado en Python y Django — Pentester</p>
+
+            <div class="flex justify-center gap-3 mb-10">
+                <a href="https://github.com/AzkOsDev"
+                    class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"><i
+                        class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/santiago-camacho-parra-00843b275"
+                    class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/AzK_dev"
+                    class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"><i
+                        class="fab fa-twitter"></i></a>
+                <a href="mailto:azk.os.dev@gmail.com"
+                    class="w-11 h-11 border border-white/15 rounded-md flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"><i
+                        class="fas fa-envelope"></i></a>
+            </div>
+
+            <div class="pt-8 border-t border-white/10">
+                <p class="text-white/35 text-sm font-mono">© 2025 Santiago Camacho — AzK-os-dev. Todos los derechos
+                    reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Smooth scroll + close mobile menu
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Signal bars fill on view
+        const signalObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.signal-fill').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
+                    });
+                    signalObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.4 });
+        const skillsSection = document.querySelector('#habilidades');
+        if (skillsSection) signalObserver.observe(skillsSection);
+
+        // Active nav path on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const pathLinks = document.querySelectorAll('[data-path]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (scrollY >= sectionTop && scrollY < sectionTop + section.clientHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            pathLinks.forEach(link => {
+                const isActive = link.getAttribute('href') === `#${current}`;
+                link.classList.toggle('text-white', isActive);
+                link.classList.toggle('border-accent', isActive);
+                link.classList.toggle('text-white/45', !isActive);
+                link.classList.toggle('border-transparent', !isActive);
+            });
+        });
+
+        // Dynamic year in footer
+        const currentYear = new Date().getFullYear();
+        const footerYear = document.querySelector('footer p.font-mono');
+        if (footerYear && currentYear !== 2025) {
+            footerYear.innerHTML = footerYear.innerHTML.replace('2025', currentYear);
+        }
+    </script>
+</body>
+
 </html>
