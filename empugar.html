@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -25,7 +28,7 @@
                     maxWidth: { content: '56rem' },
                     keyframes: {
                         fadeUp: {
-                            '0%':   { opacity: 0, transform: 'translateY(12px)' },
+                            '0%': { opacity: 0, transform: 'translateY(12px)' },
                             '100%': { opacity: 1, transform: 'translateY(0)' },
                         },
                     },
@@ -44,9 +47,11 @@
     <div class="border-b border-white/10 bg-base/95 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-content mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
             <p class="font-mono text-xs text-white/40">
-                <span class="text-white/70">AzkOsDev</span> / proyectos / <span class="text-white/70">gestor-documental</span>
+                <span class="text-white/70">AzkOsDev</span> / proyectos / <span
+                    class="text-white/70">gestor-documental</span>
             </p>
-            <a href="home.html" class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+            <a href="/index.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i> volver
             </a>
         </div>
@@ -82,7 +87,8 @@
                 </div>
                 <div>
                     <dt class="font-mono text-xs text-white/40 mb-1.5">Código</dt>
-                    <dd class="text-sm text-white/70 flex items-center gap-1.5"><i class="fas fa-lock text-xs"></i> Reservado</dd>
+                    <dd class="text-sm text-white/70 flex items-center gap-1.5"><i class="fas fa-lock text-xs"></i>
+                        Reservado</dd>
                 </div>
             </dl>
         </header>
@@ -92,17 +98,17 @@
             <p class="font-mono text-xs text-white/40 mb-4">índice</p>
             <ol class="space-y-2.5">
                 <li><a href="#resumen" class="group flex items-baseline gap-3 text-sm">
-                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">01</span>
-                    <span class="text-white/70 group-hover:text-white transition-colors">Resumen del sistema</span>
-                </a></li>
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">01</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Resumen del sistema</span>
+                    </a></li>
                 <li><a href="#capturas" class="group flex items-baseline gap-3 text-sm">
-                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">02</span>
-                    <span class="text-white/70 group-hover:text-white transition-colors">Capturas de pantalla</span>
-                </a></li>
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">02</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Capturas de pantalla</span>
+                    </a></li>
                 <li><a href="#stack" class="group flex items-baseline gap-3 text-sm">
-                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">03</span>
-                    <span class="text-white/70 group-hover:text-white transition-colors">Stack técnico</span>
-                </a></li>
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">03</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Stack técnico</span>
+                    </a></li>
             </ol>
         </nav>
 
@@ -134,46 +140,64 @@
             </div>
 
             <div class="grid sm:grid-cols-2 gap-5">
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/admin.png" alt="Vista de administrador" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/admin.png" alt="Vista de administrador"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">administrador</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">administrador
+                    </figcaption>
                 </figure>
 
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/403.png" alt="Página de error 403" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/403.png" alt="Página de error 403"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">error 403</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">error 403
+                    </figcaption>
                 </figure>
 
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/report.png" alt="Módulo de reportes" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/report.png" alt="Módulo de reportes"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">reportes</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">reportes
+                    </figcaption>
                 </figure>
 
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/certificados.png" alt="Módulo de certificados" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/certificados.png" alt="Módulo de certificados"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">certificados</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">certificados
+                    </figcaption>
                 </figure>
 
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/file-manager.png" alt="Administrador de archivos" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/file-manager.png" alt="Administrador de archivos"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">file manager</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">file manager
+                    </figcaption>
                 </figure>
 
-                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
                     <div class="h-64 bg-white/[0.03] flex items-center justify-center">
-                        <img src="./assets/images/dashboard.png" alt="Panel principal" class="max-h-full max-w-full object-contain">
+                        <img src="./assets/images/dashboard.png" alt="Panel principal"
+                            class="max-h-full max-w-full object-contain">
                     </div>
-                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">dashboard</figcaption>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">dashboard
+                    </figcaption>
                 </figure>
             </div>
         </section>
@@ -196,32 +220,38 @@
                     </thead>
                     <tbody class="divide-y divide-white/10">
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fab fa-python text-white/40 w-4"></i> Python</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fab fa-python text-white/40 w-4"></i> Python</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">3.10+</td>
                             <td class="px-6 py-4 text-sm text-white/60">Lenguaje principal</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fas fa-server text-white/40 w-4"></i> Django</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fas fa-server text-white/40 w-4"></i> Django</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">5.1.6</td>
                             <td class="px-6 py-4 text-sm text-white/60">Framework web</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fas fa-paint-brush text-white/40 w-4"></i> Bulma CSS</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fas fa-paint-brush text-white/40 w-4"></i> Bulma CSS</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">latest</td>
                             <td class="px-6 py-4 text-sm text-white/60">Diseño responsivo</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fas fa-database text-white/40 w-4"></i> MySQL</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fas fa-database text-white/40 w-4"></i> MySQL</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">—</td>
                             <td class="px-6 py-4 text-sm text-white/60">Base de datos</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fas fa-icons text-white/40 w-4"></i> Font Awesome</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fas fa-icons text-white/40 w-4"></i> Font Awesome</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">latest</td>
                             <td class="px-6 py-4 text-sm text-white/60">Iconografía</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i class="fas fa-file text-white/40 w-4"></i> django-filer</td>
+                            <td class="px-6 py-4 text-white font-medium flex items-center gap-3"><i
+                                    class="fas fa-file text-white/40 w-4"></i> django-filer</td>
                             <td class="px-6 py-4 font-mono text-sm text-white/50">latest</td>
                             <td class="px-6 py-4 text-sm text-white/60">Gestión avanzada de archivos</td>
                         </tr>
@@ -233,16 +263,19 @@
 
     <!-- Footer -->
     <footer class="bg-black border-t border-white/10 mt-4">
-        <div class="max-w-content mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div
+            class="max-w-content mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p class="text-sm text-white/50">
                 Desarrollado por <span class="text-white font-medium">AzkOsDev</span> para
                 <span class="text-white font-medium">Empugar E.S.P.</span>
             </p>
-            <a href="home.html" class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+            <a href="home.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i> volver al portafolio
             </a>
         </div>
     </footer>
 
 </body>
+
 </html>
