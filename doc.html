@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos — Notas de Pentesting | AzkOsDev</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        body: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    colors: {
+                        base: '#0B0D10',
+                        accent: '#E2703D',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-body bg-base text-white antialiased">
+
+    <div class="flex">
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-72 shrink-0 border-r border-white/10 bg-base
+            overflow-y-auto -translate-x-full lg:translate-x-0 transition-transform duration-200 z-40">
+
+            <div class="px-6 py-6 border-b border-white/10">
+                <a href="home.html" class="font-display font-semibold text-white text-lg leading-tight block">
+                    AzkOsDev <span class="text-white/40 font-mono text-xs font-normal block mt-1">notas de
+                        pentesting</span>
+                </a>
+            </div>
+
+            <div class="px-6 py-5">
+                <div class="relative">
+                    <i
+                        class="fas fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-xs"></i>
+                    <input id="doc-search" type="text" placeholder="buscar en las notas..."
+                        class="w-full bg-white/[0.03] border border-white/10 rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder-white/30 font-mono focus:outline-none focus:border-white/30">
+                </div>
+            </div>
+
+            <nav class="px-4 pb-10">
+                <div class="mb-6">
+                    <p class="font-mono text-[11px] uppercase tracking-wider text-white/30 px-2 mb-2">empezar</p>
+                    <a href="#intro"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">Introducción</a>
+                    <a href="#metodologia"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">Metodología
+                        general</a>
+                </div>
+
+                <div class="mb-6">
+                    <p class="font-mono text-[11px] uppercase tracking-wider text-white/30 px-2 mb-2">evasión</p>
+                    <a href="#waf"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">Evasión
+                        de WAF</a>
+                </div>
+
+                <div class="mb-6">
+                    <p class="font-mono text-[11px] uppercase tracking-wider text-white/30 px-2 mb-2">vulnerabilidades
+                        web</p>
+                    <a href="#xss"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">Cross-Site
+                        Scripting</a>
+                    <a href="#sqli"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">SQL
+                        Injection</a>
+                    <a href="#ssrf"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">SSRF</a>
+                    <a href="#idor"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">IDOR
+                        / Control de acceso</a>
+                </div>
+
+                <div>
+                    <p class="font-mono text-[11px] uppercase tracking-wider text-white/30 px-2 mb-2">herramientas</p>
+                    <a href="#herramientas"
+                        class="doc-link block px-2 py-1.5 rounded text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors">Notas
+                        de herramientas</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Overlay para móvil -->
+        <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-30 lg:hidden"></div>
+
+        <!-- Main -->
+        <div class="flex-1 min-w-0">
+
+            <!-- Top bar -->
+            <div class="sticky top-0 z-20 border-b border-white/10 bg-base/95 backdrop-blur-md">
+                <div class="px-5 sm:px-10 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <button id="sidebar-toggle" class="lg:hidden text-white/70" aria-label="Abrir menú">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <p class="font-mono text-xs text-white/40">
+                            <span class="text-white/70">AzkOsDev</span> / recursos
+                        </p>
+                    </div>
+                    <a href="home.html"
+                        class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i> volver al portafolio
+                    </a>
+                </div>
+            </div>
+
+            <div class="max-w-3xl mx-auto px-5 sm:px-10 py-14">
+
+                <!-- Aviso -->
+                <div class="rounded-lg border-l-2 border-accent bg-white/[0.03] p-5 mb-14 flex items-start gap-3">
+                    <i class="fas fa-triangle-exclamation text-accent mt-0.5"></i>
+                    <p class="text-sm text-white/60 leading-relaxed">
+                        Estas notas son de uso personal y fines educativos, construidas a partir de auditorías
+                        realizadas bajo autorización. No apliques ninguna técnica aquí descrita sobre sistemas
+                        que no te pertenecen o para los que no tengas permiso explícito.
+                    </p>
+                </div>
+
+                <!-- Introducción -->
+                <section id="intro" class="scroll-mt-24 mb-16">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · introducción</p>
+                    <h1 class="font-display font-semibold text-3xl text-white mb-5">Introducción</h1>
+                    <div class="space-y-4 text-white/65 leading-relaxed">
+                        <p>
+                            Este espacio funciona como una bóveda personal de técnicas, comandos y listas de
+                            verificación que he ido documentando durante auditorías de seguridad web. La idea
+                            es tener un punto de referencia rápido — no una guía exhaustiva — que crece cada
+                            vez que encuentro algo que vale la pena recordar.
+                        </p>
+                        <p>
+                            Cada sección sigue el mismo formato: contexto breve, checklist de lo que se debe
+                            probar, y notas o comandos concretos cuando aplica.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Metodología -->
+                <section id="metodologia" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · metodología</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">Metodología general</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">
+                        Flujo base que sigo antes de entrar al detalle de cada tipo de vulnerabilidad.
+                    </p>
+                    <ol class="space-y-3">
+                        <li class="flex items-start gap-3 text-sm text-white/70">
+                            <span class="font-mono text-accent text-xs mt-0.5">01</span> Reconocimiento y mapeo de
+                            superficie (subdominios, endpoints, tecnologías).
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-white/70">
+                            <span class="font-mono text-accent text-xs mt-0.5">02</span> Identificación de puntos de
+                            entrada (parámetros, headers, cookies, uploads).
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-white/70">
+                            <span class="font-mono text-accent text-xs mt-0.5">03</span> Pruebas dirigidas por tipo de
+                            vulnerabilidad (ver secciones siguientes).
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-white/70">
+                            <span class="font-mono text-accent text-xs mt-0.5">04</span> Validación de impacto real y
+                            documentación del hallazgo.
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Evasión de WAF -->
+                <section id="waf" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · evasión</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">Evasión de WAF</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">
+                        Categorías generales que reviso cuando un payload es bloqueado antes de descartar
+                        la vulnerabilidad. Completa cada apartado con las variantes concretas que te hayan
+                        funcionado en campo.
+                    </p>
+
+                    <div class="space-y-3">
+                        <div class="rounded-lg border border-white/10 bg-white/[0.02] p-5">
+                            <h3 class="font-medium text-white text-sm mb-1.5 flex items-center gap-2">
+                                <i class="fas fa-square text-white/20 text-xs"></i> Codificación alternativa
+                            </h3>
+                            <p class="text-white/50 text-sm">Probar URL-encoding doble, Unicode, HTML entities,
+                                mayúsculas/minúsculas mezcladas.</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/[0.02] p-5">
+                            <h3 class="font-medium text-white text-sm mb-1.5 flex items-center gap-2">
+                                <i class="fas fa-square text-white/20 text-xs"></i> Fragmentación de la petición
+                            </h3>
+                            <p class="text-white/50 text-sm">Dividir el payload entre parámetros, headers o el cuerpo de
+                                la petición.</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/[0.02] p-5">
+                            <h3 class="font-medium text-white text-sm mb-1.5 flex items-center gap-2">
+                                <i class="fas fa-square text-white/20 text-xs"></i> Cambio de método o content-type
+                            </h3>
+                            <p class="text-white/50 text-sm">Repetir la prueba con GET/POST/PUT o alternando entre JSON
+                                y form-urlencoded.</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/[0.02] p-5">
+                            <h3 class="font-medium text-white text-sm mb-1.5 flex items-center gap-2">
+                                <i class="fas fa-square text-white/20 text-xs"></i> Pruebas manuales vs. automatizadas
+                            </h3>
+                            <p class="text-white/50 text-sm">Cuando el escaneo automatizado es bloqueado, bajar el ritmo
+                                y probar uno a uno desde Repeater.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- XSS -->
+                <section id="xss" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · vulnerabilidad</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">Cross-Site Scripting (XSS)</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">Checklist de pruebas manuales antes de descartar un
+                        parámetro.</p>
+
+                    <ul class="space-y-2.5 mb-7">
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Identificar todos los puntos donde
+                            la entrada se refleja en la respuesta.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Determinar el contexto de reflejo:
+                            HTML, atributo, JavaScript, URL.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Probar con caracteres de control
+                            simples y observar si se escapan o no.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Revisar cabeceras CSP y si
+                            permiten <span class="font-mono text-white/80">unsafe-inline</span> o dominios laxos.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Confirmar el impacto (alert, robo
+                            de cookie no-HttpOnly, redirección) antes de reportar.</li>
+                    </ul>
+
+                    <p class="font-mono text-xs text-white/40 mb-2">payload base de prueba</p>
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                    <!-- barra de título -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">zsh</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap --version" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <!-- cuerpo -->
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white/40">/</span> <span class="text-white">&lt;script&gt;alert(document.domain)&lt;/script&gt;</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SQL Injection -->
+                <section id="sqli" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · vulnerabilidad</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">SQL Injection</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">Checklist de pruebas manuales por parámetro
+                        sospechoso.</p>
+
+                    <ul class="space-y-2.5 mb-7">
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Probar comillas simples/dobles y
+                            observar errores o cambios de comportamiento.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Comparar respuestas ante
+                            condiciones verdaderas vs. falsas (boolean-based).</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Si no hay diferencia visible,
+                            probar retardo temporal controlado (time-based).</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Confirmar el motor de base de
+                            datos antes de continuar con la extracción.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Documentar el impacto real
+                            (lectura de datos) de forma controlada, sin modificar información.</li>
+                    </ul>
+
+                    <p class="font-mono text-xs text-white/40 mb-2">prueba booleana básica</p>
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                    <!-- barra de título -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">zsh</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap --version" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <!-- cuerpo -->
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">' OR '1'='1</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SSRF -->
+                <section id="ssrf" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · vulnerabilidad</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">SSRF</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">Checklist de pruebas manuales cuando la app hace
+                        peticiones salientes a partir de una URL controlada por el usuario.</p>
+
+                    <ul class="space-y-2.5">
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Identificar cualquier campo que
+                            reciba una URL, callback o webhook.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Confirmar la petición saliente con
+                            un servicio de captura externo antes de escalar.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Evaluar si es posible alcanzar
+                            rangos internos o metadatos del proveedor cloud.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Revisar si la respuesta se refleja
+                            al usuario (blind vs. no blind).</li>
+                    </ul>
+                </section>
+
+                <!-- IDOR -->
+                <section id="idor" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · vulnerabilidad</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">IDOR / Control de acceso</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">Checklist de pruebas manuales sobre identificadores y
+                        permisos.</p>
+
+                    <ul class="space-y-2.5">
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Mapear todos los endpoints que
+                            reciben un ID (numérico, UUID, hash predecible).</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Probar acceso con una cuenta de
+                            menor privilegio a recursos de otra cuenta.</li>
+                        <li class="flex items-start gap-3 text-sm text-white/70"><i
+                                class="fas fa-square text-white/20 text-xs mt-1"></i> Verificar el control de acceso
+                            tanto en lectura como en escritura/eliminación.</li>
+                    </ul>
+                </section>
+
+                <!-- Herramientas -->
+                <section id="herramientas" class="scroll-mt-24 pt-10 border-t border-white/10">
+                    <p class="font-mono text-xs text-white/40 mb-3">página · referencia</p>
+                    <h2 class="font-display font-semibold text-2xl text-white mb-5">Notas de herramientas</h2>
+                    <p class="text-white/65 leading-relaxed mb-6">Comandos que uso con frecuencia y vale la pena no
+                        tener que recordar de memoria.</p>
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                    <!-- barra de título -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">ffuf · fuzzing de rutas con extensiones comunes</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap --version" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <!-- cuerpo -->
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">ffuf -u https://target.com/FUZZ -w wordlist.txt -e .php,.html,.bak</span></p>
+                        </div>
+                    </div>
+                    <!-- nmap sigiloso con timing y señuelos -->
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                        <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">nmap · escaneo sigiloso con timing bajo</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap -sS -T2 --scan-delay 500ms -D RND:5 target.com" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">nmap -sS -T2 --scan-delay 500ms -D RND:5 target.com</span></p>
+                            <p class="text-white/40 text-xs mt-2">-T2: plantilla de tiempo "sigilosa" · --scan-delay: espera entre sondas · -D: señuelos aleatorios para camuflar el origen</p>
+                        </div>
+                    </div>
+                    <!-- sqlmap con delay, user-agent aleatorio y tamper -->
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                        <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">sqlmap · pruebas con delay y tamper</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="sqlmap -u &quot;https://target.com/item?id=1&quot; --delay=2 --random-agent --tamper=space2comment" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">sqlmap -u "https://target.com/item?id=1" --delay=2 --random-agent --tamper=space2comment</span></p>
+                            <p class="text-white/40 text-xs mt-2">--delay: segundos entre peticiones · --random-agent: rota el User-Agent · --tamper: script incluido en sqlmap para reescribir la sintaxis del payload</p>
+                        </div>
+                    </div>
+                    <!-- ffuf con rate-limit y user-agent aleatorio -->
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                        <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">ffuf · fuzzing con control de ritmo</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="ffuf -u https://target.com/FUZZ -w wordlist.txt -p 1.5-3.0 -rate 10 -H &quot;User-Agent: Mozilla/5.0&quot;" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">ffuf -u https://target.com/FUZZ -w wordlist.txt -p 1.5-3.0 -rate 10 -H "User-Agent: Mozilla/5.0"</span></p>
+                            <p class="text-white/40 text-xs mt-2">-p: pausa aleatoria entre peticiones · -rate: máximo de peticiones/seg · evita picos de tráfico detectables de igual manera el User Agent es detectado como malicioso por algunos WAF si este mismo no proviene de un navegador legitimo</p>
+                        </div>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                    <!-- barra de título -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">gobuster · fuerza bruta de directorios y subdominios</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap --version" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <!-- cuerpo -->
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">gobuster dir -u https://target.com -w wordlist.txt -t 50</span></p>
+                        </div>
+                    </div>
+                    <div class="rounded-lg border border-white/10 bg-black/70 overflow-hidden font-mono text-sm my-6">
+                    <!-- barra de título -->
+                    <div class="flex items-center justify-between px-4 py-2.5 bg-white/[0.05] border-b border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-[#FF5F57]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#FEBC2E]"></span>
+                                <span class="w-3 h-3 rounded-full bg-[#28C840]"></span>
+                            </div>
+                            <span class="text-white/40 text-xs select-none">nmap · escaneo rápido de puertos comunes</span>
+                            <button class="copy-btn text-white/40 hover:text-white transition-colors" data-copy="nmap --version" aria-label="Copiar comando">
+                                <i class="fa-regular fa-copy text-sm"></i>
+                            </button>
+                        </div>
+                        <!-- cuerpo -->
+                        <div class="p-4 space-y-1 leading-relaxed">
+                            <p><span class="text-white">nmap -p- -T4 --min-rate 1000 target.com</span></p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        }
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+        toggleBtn.addEventListener('click', openSidebar);
+        overlay.addEventListener('click', closeSidebar);
+        document.querySelectorAll('.doc-link').forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+
+        // Active link highlighting based on scroll position
+        const docLinks = document.querySelectorAll('.doc-link');
+        const docSections = document.querySelectorAll('section[id]');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const link = document.querySelector(`.doc-link[href="#${entry.target.id}"]`);
+                if (!link) return;
+                if (entry.isIntersecting) {
+                    docLinks.forEach(l => { l.classList.remove('text-white', 'bg-white/[0.06]'); l.classList.add('text-white/60'); });
+                    link.classList.add('text-white', 'bg-white/[0.06]');
+                    link.classList.remove('text-white/60');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        docSections.forEach(section => sectionObserver.observe(section));
+
+        // Simple client-side search: filters visible nav links by text match
+        const searchInput = document.getElementById('doc-search');
+        searchInput.addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            docLinks.forEach(link => {
+                const match = link.textContent.toLowerCase().includes(q);
+                link.style.display = match ? '' : 'none';
+            });
+        });
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(btn.dataset.copy);
+                const icon = btn.querySelector('i');
+                icon.classList.replace('fa-regular', 'fa-solid');
+                icon.classList.replace('fa-copy', 'fa-check');
+                btn.classList.add('text-emerald-400');
+                setTimeout(() => {
+                    icon.classList.replace('fa-solid', 'fa-regular');
+                    icon.classList.replace('fa-check', 'fa-copy');
+                    btn.classList.remove('text-emerald-400');
+                }, 1500);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -72,6 +72,9 @@
                     <li><a href="#proyectos"
                             class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
                             data-path>proyectos</a></li>
+                    <li><a href="/doc.html"
+                            class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
+                            data-path>doc</a></li>
                     <li><a href="#contacto"
                             class="path-link font-mono text-[13px] text-white/45 hover:text-white border-b border-transparent pb-1 transition-colors"
                             data-path>contacto</a></li>
@@ -85,6 +88,7 @@
                     <li><a href="#educacion" class="block text-white/60 hover:text-white">educacion</a></li>
                     <li><a href="#experiencia" class="block text-white/60 hover:text-white">experiencia</a></li>
                     <li><a href="#proyectos" class="block text-white/60 hover:text-white">proyectos</a></li>
+                    <li><a href="/doc.html" class="block text-white/60 hover:text-white">doc</a></li>
                     <li><a href="#contacto" class="block text-white/60 hover:text-white">contacto</a></li>
                 </ul>
             </div>
@@ -553,6 +557,69 @@
                     <a href="https://github.com/AsTEKA01/ZWAR"
                         class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5 pt-4 border-t border-white/10">
                         <i class="fab fa-github"></i> ver código
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Write-ups -->
+    <section id="writeups" class="py-24 border-t border-white/10">
+        <div class="max-w-content mx-auto px-5 sm:px-8">
+            <span class="font-mono text-sm text-accent block mb-3">~/writeups</span>
+            <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+                Hallazgos documentados
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-bug text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">SSRF encadenado con XSS vía plugin
+                        FormCraft</h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Cómo una vulnerabilidad conocida, olvidada en un subdominio de mantenimiento,
+                        se convirtió en el punto de entrada para escalar el impacto de una auditoría de seguridad.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">ssrf</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">xss</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">cve-2022-0591</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">wordpress</span>
+                    </div>
+                    <a href="writeup-ssrf-xss.html"
+                        class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5 pt-4 border-t border-white/10">
+                        <i class="fas fa-file-alt"></i> leer write-up
+                    </a>
+                </div>
+
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/25 transition-colors p-8">
+                    <i class="fas fa-mobile-screen-button text-xl text-white mb-5 block"></i>
+                    <h3 class="font-display font-semibold text-lg text-white mb-3">De un SMS de phishing a una SQL
+                        Injection</h3>
+                    <p class="text-white/50 text-sm leading-relaxed mb-5">
+                        Un SMS fraudulento suplantando a una entidad bancaria terminó exponiendo, por sus
+                        propias fallas, los datos que había recolectado de sus víctimas.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">sqli</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">phishing</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">waf
+                            bypass</span>
+                        <span
+                            class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">time-based</span>
+                    </div>
+                    <a href="writeup-phishing-sqli.html"
+                        class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5 pt-4 border-t border-white/10">
+                        <i class="fas fa-file-alt"></i> leer write-up
                     </a>
                 </div>
             </div>

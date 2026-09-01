@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write-up — SSRF encadenado con XSS vía plugin FormCraft (CVE-2022-0591)</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        body: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    colors: {
+                        base: '#0B0D10',
+                        accent: '#E2703D',
+                    },
+                    maxWidth: { content: '52rem' },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(12px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp .8s cubic-bezier(.2,.7,.3,1) both',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-body bg-base text-white antialiased">
+
+    <!-- Document bar -->
+    <div class="border-b border-white/10 bg-base/95 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-content mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <p class="font-mono text-xs text-white/40">
+                <span class="text-white/70">AzkOsDev</span> / write-ups / <span
+                    class="text-white/70">ssrf-xss-formcraft</span>
+            </p>
+            <a href="/index.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-content mx-auto px-5 sm:px-8">
+
+        <!-- Cover -->
+        <header class="pt-16 pb-14 border-b border-white/10 animate-fade-up motion-reduce:animate-none">
+            <p class="font-mono text-sm text-accent mb-4">hallazgo de seguridad</p>
+            <h1 class="font-display font-semibold text-3xl md:text-4xl text-white leading-tight mb-4">
+                Encadenando una SSRF con XSS a través de un plugin de WordPress desactualizado
+            </h1>
+            <p class="text-lg text-white/55 max-w-2xl leading-relaxed mb-10">
+                Cómo una vulnerabilidad conocida y públicamente documentada, olvidada en un subdominio
+                de mantenimiento, se convirtió en el punto de entrada para escalar el impacto de una
+                auditoría de seguridad.
+            </p>
+
+            <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 border-t border-white/10 pt-8">
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">CVE</dt>
+                    <dd class="text-sm text-white">2022-0591</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Componente</dt>
+                    <dd class="text-sm text-white">Plugin FormCraft</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Clase</dt>
+                    <dd class="text-sm text-white">SSRF → XSS</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Contexto</dt>
+                    <dd class="text-sm text-white/70">Auditoría autorizada</dd>
+                </div>
+            </dl>
+        </header>
+
+        <!-- Table of contents -->
+        <nav class="py-10 border-b border-white/10">
+            <p class="font-mono text-xs text-white/40 mb-4">índice</p>
+            <ol class="space-y-2.5">
+                <li><a href="#hallazgo" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">01</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">El hallazgo</span>
+                    </a></li>
+                <li><a href="#impacto" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">02</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">De SSRF a XSS</span>
+                    </a></li>
+                <li><a href="#evidencia" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">03</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Evidencia</span>
+                    </a></li>
+                <li><a href="#conclusion" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">04</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Conclusión</span>
+                    </a></li>
+            </ol>
+        </nav>
+
+        <!-- 01 — El hallazgo -->
+        <section id="hallazgo" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">01</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">El hallazgo</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Durante una auditoría de seguridad sobre la infraestructura de un sitio WordPress,
+                    identifiqué una vulnerabilidad conocida y públicamente documentada en el plugin
+                    <span class="text-white">FormCraft</span>, asociada al
+                    <span class="font-mono text-white/80">CVE-2022-0591</span>.
+                </p>
+                <p>
+                    Lo interesante del hallazgo es que el vector de ataque no se encontraba directamente
+                    en el sitio web principal, sino en un subdominio que mantenía una versión desactualizada
+                    del plugin, convirtiéndose en el punto de entrada para la cadena de ataque.
+                </p>
+                <p>
+                    La vulnerabilidad corresponde a una <span class="text-white">Server-Side Request Forgery
+                        (SSRF) no autenticada</span>, que permitía manipular una funcionalidad del plugin para
+                    provocar solicitudes desde el propio servidor hacia destinos controlados o accesibles
+                    desde su infraestructura.
+                </p>
+            </div>
+        </section>
+
+        <!-- 02 — De SSRF a XSS -->
+        <section id="impacto" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">02</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">De SSRF a XSS</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Durante la evaluación fue posible demostrar el impacto de la SSRF mediante el
+                    reconocimiento de la red interna, identificando servicios que no estaban directamente
+                    expuestos a Internet.
+                </p>
+                <p>
+                    Posteriormente, en pruebas controladas, conseguí encadenar la SSRF con un
+                    <span class="text-white">Cross-Site Scripting (XSS)</span>, ampliando el impacto potencial
+                    mediante el robo de cookies de sesión — demostrando cómo una falla aparentemente aislada
+                    puede convertirse en parte de una cadena de ataque más compleja.
+                </p>
+            </div>
+        </section>
+
+        <!-- 03 — Evidencia -->
+        <section id="evidencia" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-10">
+                <span class="font-mono text-sm text-accent">03</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Evidencia</h2>
+            </div>
+
+            <div class="space-y-5">
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/01-webhook-ssrf.png"
+                            alt="Webhook.site recibiendo una petición saliente desde el servidor vulnerable"
+                            class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">01 ·
+                        confirmación de la SSRF vía webhook.site — la petición sale desde la infraestructura del
+                        servidor, no desde el navegador</figcaption>
+                </figure>
+
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/02-ffuf-portscan.png"
+                            alt="Escaneo de puertos internos usando ffuf a través de la SSRF"
+                            class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">02 ·
+                        reconocimiento de puertos internos con ffuf, abusando de la SSRF como proxy ciego</figcaption>
+                </figure>
+
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/03-nmap-external.png"
+                            alt="Escaneo externo con nmap sobre el host objetivo" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">03 · escaneo
+                        externo de referencia con nmap sobre el host, para contrastar la superficie visible desde fuera
+                    </figcaption>
+                </figure>
+
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/04-ssrf-render.png"
+                            alt="El servidor vulnerable renderizando contenido de un destino controlado a través de un túnel"
+                            class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">04 · el
+                        servidor renderiza contenido servido desde un endpoint controlado, confirmando que la SSRF
+                        permite inyectar respuestas arbitrarias</figcaption>
+                </figure>
+
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/05-xss-alert.png"
+                            alt="Ejecución de un XSS de prueba en el dominio vulnerable" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">05 · prueba
+                        de concepto: el payload servido a través de la SSRF ejecuta JavaScript en el contexto del
+                        dominio afectado</figcaption>
+                </figure>
+
+                <figure
+                    class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup/06-xss-cookies.png"
+                            alt="Cookies de sesión expuestas mediante el XSS encadenado" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">06 · impacto
+                        final: exfiltración de cookies de sesión del dominio, demostrando el alcance real de la cadena
+                        SSRF → XSS</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 04 — Conclusión -->
+        <section id="conclusion" class="py-16">
+            <div class="flex items-baseline gap-3 mb-8">
+                <span class="font-mono text-sm text-accent">04</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Conclusión</h2>
+            </div>
+
+            <div class="rounded-lg border-l-2 border-accent bg-white/[0.03] p-7 mb-8 max-w-2xl">
+                <p class="text-white/85 leading-relaxed mb-4">
+                    Mantener WordPress, plugins y temas actualizados es una medida de seguridad, no un
+                    detalle de mantenimiento menor.
+                </p>
+                <p class="text-white/85 leading-relaxed">
+                    Una vulnerabilidad puede comenzar con una simple petición HTTP y terminar teniendo
+                    un impacto mucho mayor cuando se combina con otros fallos.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#cybersecurity</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#pentesting</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#wordpress</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#ssrf</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#xss</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#bugbounty</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#ethicalhacking</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#cve</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#websecurity</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 mt-4">
+        <div
+            class="max-w-content mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-white/50">
+                Publicado originalmente en
+                <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498714007709581312/"
+                    class="text-white hover:text-accent transition-colors font-medium">LinkedIn</a>
+                por <span class="text-white font-medium">Santiago Camacho Parra</span>
+            </p>
+            <a href="/index.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver al portafolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

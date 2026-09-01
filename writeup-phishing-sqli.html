@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write-up — De un SMS de phishing a una SQL Injection</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        body: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    colors: {
+                        base: '#0B0D10',
+                        accent: '#E2703D',
+                    },
+                    maxWidth: { content: '52rem' },
+                    keyframes: {
+                        fadeUp: {
+                            '0%':   { opacity: 0, transform: 'translateY(12px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp .8s cubic-bezier(.2,.7,.3,1) both',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-body bg-base text-white antialiased">
+
+    <!-- Document bar -->
+    <div class="border-b border-white/10 bg-base/95 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-content mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <p class="font-mono text-xs text-white/40">
+                <span class="text-white/70">AzkOsDev</span> / write-ups / <span class="text-white/70">phishing-sqli</span>
+            </p>
+            <a href="index.html" class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-content mx-auto px-5 sm:px-8">
+
+        <!-- Cover -->
+        <header class="pt-16 pb-14 border-b border-white/10 animate-fade-up motion-reduce:animate-none">
+            <p class="font-mono text-sm text-accent mb-4">hallazgo de seguridad</p>
+            <h1 class="font-display font-semibold text-3xl md:text-4xl text-white leading-tight mb-4">
+                De un SMS de phishing a una SQL Injection en su propia infraestructura
+            </h1>
+            <p class="text-lg text-white/55 max-w-2xl leading-relaxed mb-10">
+                Un SMS fraudulento suplantando a una entidad bancaria terminó exponiendo, por sus
+                propias fallas, los datos que había recolectado de sus víctimas.
+            </p>
+
+            <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 border-t border-white/10 pt-8">
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Origen</dt>
+                    <dd class="text-sm text-white">SMS de phishing</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Técnica</dt>
+                    <dd class="text-sm text-white">SQLi time-based</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">WAF</dt>
+                    <dd class="text-sm text-white">Evadido manualmente</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Registros expuestos</dt>
+                    <dd class="text-sm text-white">479</dd>
+                </div>
+            </dl>
+        </header>
+
+        <!-- Table of contents -->
+        <nav class="py-10 border-b border-white/10">
+            <p class="font-mono text-xs text-white/40 mb-4">índice</p>
+            <ol class="space-y-2.5">
+                <li><a href="#origen" class="group flex items-baseline gap-3 text-sm">
+                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">01</span>
+                    <span class="text-white/70 group-hover:text-white transition-colors">El origen: un SMS sospechoso</span>
+                </a></li>
+                <li><a href="#useragent" class="group flex items-baseline gap-3 text-sm">
+                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">02</span>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Validación por User-Agent</span>
+                </a></li>
+                <li><a href="#sqli" class="group flex items-baseline gap-3 text-sm">
+                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">03</span>
+                    <span class="text-white/70 group-hover:text-white transition-colors">SQL Injection y evasión de WAF</span>
+                </a></li>
+                <li><a href="#evidencia" class="group flex items-baseline gap-3 text-sm">
+                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">04</span>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Evidencia</span>
+                </a></li>
+                <li><a href="#lecciones" class="group flex items-baseline gap-3 text-sm">
+                    <span class="font-mono text-white/30 group-hover:text-accent transition-colors">05</span>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Lecciones aprendidas</span>
+                </a></li>
+            </ol>
+        </nav>
+
+        <!-- 01 — Origen -->
+        <section id="origen" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">01</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">El origen: un SMS sospechoso</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Hace unos días recibí un SMS que aparentaba provenir de una entidad bancaria y
+                    mencionaba un supuesto cobro de un seguro Cardif por <span class="text-white">$489.500 COP</span>.
+                </p>
+                <p>
+                    En lugar de interactuar con el mensaje, decidí analizar el sitio enlazado desde
+                    una perspectiva de pentesting.
+                </p>
+            </div>
+        </section>
+
+        <!-- 02 — User-Agent -->
+        <section id="useragent" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">02</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Validación por User-Agent</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    El sitio utilizaba una validación basada en el <span class="text-white">User-Agent</span>
+                    para diferenciar entre dispositivos móviles y computadores.
+                </p>
+                <p>
+                    Al acceder desde un dispositivo móvil se mostraba el sitio de phishing, mientras que
+                    desde un computador se redirigía hacia una página aparentemente legítima — una técnica
+                    común para dificultar el análisis y la detección automatizada.
+                </p>
+            </div>
+        </section>
+
+        <!-- 03 — SQL Injection -->
+        <section id="sqli" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">03</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">SQL Injection y evasión de WAF</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Identifiqué un posible punto vulnerable relacionado con SQL Injection, debido a una
+                    validación insuficiente del parámetro <span class="font-mono text-white/80">id</span>.
+                </p>
+                <p>
+                    Las pruebas automatizadas eran bloqueadas por un WAF, así que continué el análisis de
+                    forma manual. La vulnerabilidad se confirmó mediante una prueba controlada de
+                    comportamiento temporal (<span class="text-white">time-based SQL injection</span>).
+                </p>
+                <p>
+                    Al continuar las pruebas, descubrí que la vulnerabilidad no solo permitía interactuar
+                    con la base de datos, sino que dejaba expuesta información asociada a los registros
+                    capturados por el propio sitio de phishing — en total,
+                    <span class="text-white">479 registros</span> almacenados en la plataforma.
+                </p>
+                <p class="text-white/45 text-sm">
+                    Por razones de seguridad y privacidad, no se muestran credenciales ni información
+                    que pueda identificar a las víctimas.
+                </p>
+            </div>
+        </section>
+
+        <!-- 04 — Evidencia -->
+        <section id="evidencia" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-10">
+                <span class="font-mono text-sm text-accent">04</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Evidencia</h2>
+            </div>
+
+            <div class="space-y-5">
+                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup2/03-sms-phishing.png" alt="SMS fraudulento suplantando a una entidad bancaria" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">01 · SMS recibido, suplantando a una entidad bancaria y usado como punto de partida del análisis</figcaption>
+                </figure>
+
+                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup2/04-phishing-login.png" alt="Página de phishing simulando el acceso a la sucursal virtual" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">02 · sitio de phishing servido al acceder desde un dispositivo móvil, replicando el flujo de acceso legítimo</figcaption>
+                </figure>
+
+                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup2/01-intruder-sleep.png" alt="Prueba time-based en Burp Suite Repeater, con retardo de 10 segundos en la respuesta" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">03 · confirmación de la SQLi mediante retardo temporal: la respuesta tarda 10 segundos frente al comportamiento normal del servidor</figcaption>
+                </figure>
+
+                <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/writeup2/02-union-select.png" alt="Extracción de esquema y columnas de la base de datos mediante UNION SELECT" class="w-full object-contain">
+                    </div>
+                    <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">04 · una vez confirmada, se extrae el esquema de la base de datos y las columnas de la tabla que almacenaba los registros capturados</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- 05 — Lecciones -->
+        <section id="lecciones" class="py-16">
+            <div class="flex items-baseline gap-3 mb-10">
+                <span class="font-mono text-sm text-accent">05</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Lecciones aprendidas</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5 mb-10">
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-7">
+                    <h3 class="font-display font-semibold text-white mb-4 flex items-center gap-2.5">
+                        <i class="fas fa-user text-accent text-sm"></i> Para usuarios
+                    </h3>
+                    <ul class="space-y-2.5 text-sm text-white/60">
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> No confiar únicamente en el contenido de un SMS o correo electrónico.</li>
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> Verificar cuidadosamente el dominio antes de interactuar.</li>
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> Evitar acceder a enlaces enviados mediante mensajes inesperados.</li>
+                    </ul>
+                </div>
+                <div class="rounded-lg border border-white/10 bg-white/[0.02] p-7">
+                    <h3 class="font-display font-semibold text-white mb-4 flex items-center gap-2.5">
+                        <i class="fas fa-code text-accent text-sm"></i> Para desarrolladores
+                    </h3>
+                    <ul class="space-y-2.5 text-sm text-white/60">
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> Validar correctamente todos los parámetros recibidos.</li>
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> Usar consultas parametrizadas u ORM para prevenir SQL Injection.</li>
+                        <li class="flex items-start gap-2.5"><i class="fas fa-circle text-[4px] text-white/30 mt-2"></i> Un WAF no reemplaza una aplicación segura: bloquea la petición, no corrige la falla detrás de ella.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#cybersecurity</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#pentesting</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#ethicalhacking</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#websecurity</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#sqlinjection</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#phishing</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#appsec</span>
+                <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#informationsecurity</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 mt-4">
+        <div class="max-w-content mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-white/50">
+                Publicado originalmente en
+                <a href="https://www.linkedin.com/feed/update/urn:li:activity:7497702845073346560/" class="text-white hover:text-accent transition-colors font-medium">LinkedIn</a>
+                por <span class="text-white font-medium">Santiago Camacho Parra</span>
+            </p>
+            <a href="index.html" class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver al portafolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+</html>
