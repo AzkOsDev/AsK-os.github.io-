@@ -40,7 +40,7 @@
             overflow-y-auto -translate-x-full lg:translate-x-0 transition-transform duration-200 z-40">
 
             <div class="px-6 py-6 border-b border-white/10">
-                <a href="home.html" class="font-display font-semibold text-white text-lg leading-tight block">
+                <a href="index.html" class="font-display font-semibold text-white text-lg leading-tight block">
                     AzkOsDev <span class="text-white/40 font-mono text-xs font-normal block mt-1">notas de
                         pentesting</span>
                 </a>
@@ -114,7 +114,7 @@
                             <span class="text-white/70">AzkOsDev</span> / recursos
                         </p>
                     </div>
-                    <a href="home.html"
+                    <a href="index.html"
                         class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
                         <i class="fas fa-arrow-left"></i> volver al portafolio
                     </a>
@@ -182,12 +182,13 @@
                 <section id="waf" class="scroll-mt-24 mb-16 pt-10 border-t border-white/10">
                     <p class="font-mono text-xs text-white/40 mb-3">página · evasión</p>
                     <h2 class="font-display font-semibold text-2xl text-white mb-5">Evasión de WAF</h2>
-                    <p class="text-white/65 leading-relaxed mb-6">
-                        Categorías generales que reviso cuando un payload es bloqueado antes de descartar
-                        la vulnerabilidad. Completa cada apartado con las variantes concretas que te hayan
-                        funcionado en campo.
-                    </p>
-
+                    <p class="text-white/65 leading-relaxed mb-6"> La <strong class="text-white">evasión de WAF</strong> es un área amplia dentro de las pruebas de seguridad y depende considerablemente de la tecnología utilizada, las reglas configuradas y la arquitectura de cada aplicación. Actualmente, encontrarse con un WAF durante una auditoría es algo muy común, por lo que un <strong class="text-white">payload bloqueado no significa necesariamente que la vulnerabilidad no exista</strong>. Entre las soluciones WAF más utilizadas actualmente se encuentra <strong class="text-white">Cloudflare</strong>, ampliamente implementado para proteger aplicaciones y APIs frente a diferentes tipos de ataques. Sin embargo, la eficacia de un WAF no depende únicamente de las capacidades del producto, sino también de <strong class="text-white">cómo ha sido configurado e integrado en la aplicación</strong>. Por esta razón, cuando durante una auditoría se consigue superar una protección de Cloudflare, <strong class="text-white">no significa necesariamente que el WAF esté mal desarrollado</strong> ni que exista una vulnerabilidad en la propia plataforma. En muchos casos, el origen está en una <strong class="text-white">configuración incorrecta o incompleta</strong> realizada por los desarrolladores o administradores: reglas demasiado permisivas, excepciones innecesarias o políticas que no contemplan determinados escenarios. Un <strong class="text-white">WAF correctamente configurado</strong> puede reducir considerablemente la superficie de ataque, pero <strong class="text-white">no sustituye la seguridad de la aplicación</strong> ni corrige por sí mismo una vulnerabilidad existente. </p>
+                    <figure class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                    <div class="bg-white/[0.03] flex items-center justify-center">
+                        <img src="./assets/images/waf.png" alt="WAF" class="w-full object-contain">
+                    </div>
+                </figure>
+                <br>
                     <div class="space-y-3">
                         <div class="rounded-lg border border-white/10 bg-white/[0.02] p-5">
                             <h3 class="font-medium text-white text-sm mb-1.5 flex items-center gap-2">
