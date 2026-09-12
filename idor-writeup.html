@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write-up — IDOR </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        body: ['"IBM Plex Sans"', 'sans-serif'],
+                        mono: ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    colors: {
+                        base: '#0B0D10',
+                        accent: '#E2703D',
+                    },
+                    maxWidth: { content: '52rem' },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(12px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp .8s cubic-bezier(.2,.7,.3,1) both',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-body bg-base text-white antialiased">
+
+    <!-- Document bar -->
+    <div class="border-b border-white/10 bg-base/95 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-content mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <p class="font-mono text-xs text-white/40">
+                <span class="text-white/70">AzkOsDev</span> / write-ups / <span
+                    class="text-white/70">idor-cuentas-pqrs</span>
+            </p>
+            <a href="/index.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver
+            </a>
+        </div>
+    </div>
+
+    <div class="max-w-content mx-auto px-5 sm:px-8">
+
+        <!-- Cover -->
+        <header class="pt-16 pb-14 border-b border-white/10 animate-fade-up motion-reduce:animate-none">
+            <p class="font-mono text-sm text-accent mb-4">hallazgo de seguridad</p>
+            <h1 class="font-display font-semibold text-3xl md:text-4xl text-white leading-tight mb-4">
+                Vulnerabilidad
+                <span class="text-red-400 font-semibold">crítica cvss (9.3)</span>
+                de <span class="text-cyan-400 font-semibold">control de acceso</span> que permitía tomar el control de
+                cualquier cuenta
+            </h1>
+            <p class="text-lg text-white/55 max-w-2xl leading-relaxed mb-10">
+                Con una cuenta de usuario estándar, sin contraseñas ajenas ni privilegios
+                administrativos, fue posible cambiar el correo y la contraseña de otra cuenta,
+                y leer las PQRS de cualquier usuario simplemente cambiando un número en la URL.
+            </p>
+
+            <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 border-t border-white/10 pt-8">
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">CWE</dt>
+                    <dd class="text-sm text-white">639 / 862</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Clase</dt>
+                    <dd class="text-sm text-white">Broken Access Control / IDOR</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">CVSS v4.0</dt>
+                    <dd class="text-sm text-white">9.3 · Crítico</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1.5">Contexto</dt>
+                    <dd class="text-sm text-white/70">Auditoría autorizada</dd>
+                </div>
+            </dl>
+        </header>
+
+        <!-- Table of contents -->
+        <nav class="py-10 border-b border-white/10">
+            <p class="font-mono text-xs text-white/40 mb-4">índice</p>
+            <ol class="space-y-2.5">
+                <li><a href="#resumen" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">01</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Resumen</span>
+                    </a></li>
+                <li><a href="#hallazgo1" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">02</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Modificar cuentas
+                            ajenas</span>
+                    </a></li>
+                <li><a href="#hallazgo2" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">03</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Leer PQRS ajenas</span>
+                    </a></li>
+                <li><a href="#severidad" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">04</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Severidad (CVSS
+                            v4.0)</span>
+                    </a></li>
+                <li><a href="#recomendaciones" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">05</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Recomendaciones</span>
+                    </a></li>
+                <li><a href="#conclusion" class="group flex items-baseline gap-3 text-sm">
+                        <span class="font-mono text-white/30 group-hover:text-accent transition-colors">06</span>
+                        <span class="text-white/70 group-hover:text-white transition-colors">Conclusión</span>
+                    </a></li>
+            </ol>
+        </nav>
+
+        <!-- 01 — Resumen -->
+        <section id="resumen" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">01</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Resumen</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Durante una prueba de seguridad web se identificaron dos vulnerabilidades de tipo
+                    <span class="text-white">Insecure Direct Object Reference (IDOR)</span>, ambas originadas
+                    por el mismo problema de fondo: la aplicación autentica correctamente a los usuarios,
+                    pero no comprueba si tienen autorización sobre el recurso concreto que están pidiendo.
+                </p>
+                <p>
+                    Con una cuenta creada por el proceso normal de registro —sin permisos especiales, sin
+                    contraseñas de nadie más— fue posible modificar el correo y la contraseña de otra cuenta,
+                    y leer PQRS que no pertenecían al usuario autenticado.
+                </p>
+                <p>
+                    Ninguno de los dos hallazgos depende de errores exóticos: basta con cambiar un
+                    identificador dentro de una solicitud legítima.
+                </p>
+            </div>
+        </section>
+
+        <!-- 02 — Hallazgo 1 -->
+        <section id="hallazgo1" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">02</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Modificar cuentas ajenas</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    La funcionalidad de edición de cuenta recibe un identificador de usuario en la solicitud
+                    y no valida que corresponda al usuario autenticado. Usando dos cuentas de prueba
+                    —<span class="font-mono text-white/80">attacker</span> y
+                    <span class="font-mono text-white/80">victim</span>—, ambas creadas sin privilegios
+                    especiales, bastó con reemplazar la referencia al recurso propio por la del otro usuario
+                    para que el servidor procesara el cambio sin objetar nada.
+                </p>
+                <p>
+                    Con eso quedó abierta la puerta a cambiar tanto el correo electrónico como la contraseña
+                    de la cuenta víctima, sin conocer su contraseña actual ni tener sesión activa como ella.
+                </p>
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.03] p-6 font-mono text-sm text-white/70 space-y-1">
+                    <p>Usuario autenticado: <span class="text-white">attacker</span></p>
+                    <p>Recurso solicitado: <span class="text-white">victim</span></p>
+                    <p>Autorización: <span class="text-accent">no validada</span></p>
+                    <p>Resultado: <span class="text-cyan-400">modificación exitosa de correo y contraseña</span></p>
+                </div>
+                <p>
+                    Al afectar directamente los mecanismos de acceso a la cuenta —correo y contraseña—, el
+                    impacto potencial va desde la pérdida de acceso del propietario legítimo hasta un
+                    account takeover completo, incluyendo cuentas con privilegios más altos si comparten
+                    el mismo flujo vulnerable.
+                </p>
+
+                <div class="space-y-5 pt-2">
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/04-idor-view-before.jpeg"
+                                alt="Petición GET al perfil de la víctima mostrando sus datos reales antes del ataque"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/04-idor-view-before.jpeg', 'Petición GET al perfil de la víctima mostrando sus datos reales antes del ataque')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 1 · perfil real de la víctima consultado con el ID de su cuenta, estando
+                            autenticado con la cuenta de attacker</figcaption>
+                    </figure>
+
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/05-idor-account-takeover.jpeg"
+                                alt="Petición PUT sobre el ID de la víctima cambiando el correo y el nombre de la cuenta"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/05-idor-account-takeover.jpeg', 'Petición PUT sobre el ID de la víctima cambiando el correo y el nombre de la cuenta')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 2 · desde la sesión de <span class="text-white/70">attacker</span>, un PUT sobre el
+                            ID de la víctima cambia su correo — el servidor responde 200 OK sin validar
+                            propiedad</figcaption>
+                    </figure>
+
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/06-idor-view-after.jpeg"
+                                alt="El mismo perfil de la víctima mostrando los datos ya modificados por el atacante"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/06-idor-view-after.jpeg', 'El mismo perfil de la víctima mostrando los datos ya modificados por el atacante')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 3 · Consultando un perfil diferente al propio con un ID</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 — Hallazgo 2 -->
+        <section id="hallazgo2" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">03</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Leer PQRS ajenas</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    Al radicar una PQRS, la aplicación entrega un identificador secuencial y predecible
+                    (<span class="font-mono text-white/80">1001, 1002, 1003…</span>). El problema no es
+                    únicamente que el identificador sea adivinable, sino que consultar cualquiera de ellos
+                    devuelve la información sin comprobar si pertenece al usuario que hace la solicitud.
+                </p>
+                <div
+                    class="rounded-lg border border-white/10 bg-white/[0.03] p-6 font-mono text-sm text-white/70 space-y-1">
+                    <p>Usuario autenticado: <span class="text-white">attacker</span></p>
+                    <p>PQRS creada: <span class="text-white">1001</span></p>
+                    <p>PQRS solicitada: <span class="text-white">1002</span> (de otro usuario)</p>
+                    <p>Autorización: <span class="text-accent">no validada</span></p>
+                    <p>Resultado: <span class="text-cyan-400">información expuesta</span></p>
+                </div>
+                <p>
+                    Esto habilita la lectura de datos personales, de contacto o de negocio contenidos en
+                    PQRS de otros usuarios, además de facilitar la enumeración masiva de todos los
+                    registros existentes en el sistema.
+                </p>
+
+                <div class="space-y-5 pt-2">
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/03-caido-radicar.jpeg"
+                                alt="Petición POST /radicar respondiendo con un número de radicado secuencial"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/03-caido-radicar.jpeg', 'Petición POST /radicar respondiendo con un número de radicado secuencial')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 4 · el endpoint <span class="font-mono text-white/70">/radicar</span> devuelve un
+                            número correlativo (<span class="font-mono text-white/70">PQRSD-SU-2026-000017</span>),
+                            fácil de predecir a partir de una radicación propia</figcaption>
+                    </figure>
+
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/01-pqrs-comprobante.jpeg"
+                                alt="Comprobante de radicación PQRSD-SU-2026-000002 con los datos completos de la solicitud"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/01-pqrs-comprobante.jpeg', 'Comprobante de radicación PQRSD-SU-2026-000002 con los datos completos de la solicitud')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 5 · comprobante completo obtenido al consultar un radicado ajeno, con la descripción
+                            de los hechos y la respuesta oficial del caso</figcaption>
+                    </figure>
+
+                    <figure
+                        class="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden hover:border-white/25 transition-colors">
+                        <div class="relative bg-white/[0.03] flex items-center justify-center group/fig">
+                            <img src="./assets/images/writeup3/02-consultar-estado.jpeg"
+                                alt="Modal de consulta de estado mostrando la respuesta oficial de una PQRS ajena"
+                                class="w-full object-contain cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onclick="openLightbox('./assets/images/writeup3/02-consultar-estado.jpeg', 'Modal de consulta de estado mostrando la respuesta oficial de una PQRS ajena')">
+                            <div
+                                class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/80 opacity-0 group-hover/fig:opacity-100 transition-opacity pointer-events-none">
+                                <i class="fas fa-magnifying-glass-plus text-xs"></i></div>
+                        </div>
+                        <figcaption class="font-mono text-xs text-white/50 px-4 py-3 border-t border-white/10">
+                            fig. 6 · el mismo radicado consultado desde el formulario público de "estado de mi
+                            solicitud", sin ningún control de propiedad</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 — Severidad CVSS -->
+        <section id="severidad" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-8">
+                <span class="font-mono text-sm text-accent">04</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Severidad (CVSS v4.0)</h2>
+            </div>
+
+            <div class="rounded-lg border border-accent/30 bg-accent/[0.06] p-7 max-w-2xl mb-6">
+                <div class="flex items-baseline gap-4 mb-4">
+                    <span class="font-display font-semibold text-4xl text-accent">9.3</span>
+                    <span class="font-mono text-sm text-white/60">/ 10 · Crítico</span>
+                </div>
+                <p class="font-mono text-xs text-white/50 break-all leading-relaxed">
+                    CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N/AU:Y/R:A/V:D/RE:L
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5 max-w-2xl text-sm">
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">AV — Vector</dt>
+                    <dd class="text-white/70">Red (N)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">AC — Complejidad</dt>
+                    <dd class="text-white/70">Baja (L)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">AT — Requisitos</dt>
+                    <dd class="text-white/70">Ninguno (N)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">PR — Privilegios</dt>
+                    <dd class="text-white/70">Ninguno (N)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">UI — Interacción</dt>
+                    <dd class="text-white/70">Ninguna (N)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">VC / VI — Confid. / Integridad</dt>
+                    <dd class="text-white/70">Alto (H)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">VA — Disponibilidad</dt>
+                    <dd class="text-white/70">Ninguna (N)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">AU — Automatizable</dt>
+                    <dd class="text-white/70">Sí (Y)</dd>
+                </div>
+                <div>
+                    <dt class="font-mono text-xs text-white/40 mb-1">R — Recuperación</dt>
+                    <dd class="text-white/70">Automática (A)</dd>
+                </div>
+            </div>
+
+            <p class="text-white/55 leading-relaxed max-w-2xl mt-8">
+                La puntuación crítica responde a que el ataque se ejecuta sin autenticación privilegiada,
+                sin interacción de la víctima y de forma remota, comprometiendo por completo la
+                confidencialidad e integridad de las cuentas afectadas.
+            </p>
+        </section>
+
+        <!-- 05 — Recomendaciones -->
+        <section id="recomendaciones" class="py-16 border-b border-white/10">
+            <div class="flex items-baseline gap-3 mb-6">
+                <span class="font-mono text-sm text-accent">05</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Recomendaciones</h2>
+            </div>
+            <div class="space-y-5 text-white/65 leading-relaxed max-w-2xl">
+                <p>
+                    La corrección de fondo es la misma para ambos hallazgos: verificar, en cada operación
+                    sensible, que el usuario autenticado sea realmente el propietario del recurso que
+                    intenta leer o modificar —autenticación y autorización no son lo mismo—.
+                </p>
+                <ul class="space-y-2 list-none">
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>Validar
+                            autorización a nivel de objeto en cada endpoint sensible, no solo la sesión activa.</span>
+                    </li>
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>No confiar en
+                            identificadores enviados por el cliente para localizar recursos.</span></li>
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>Exigir
+                            reautenticación para cambios de contraseña o correo.</span></li>
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>Invalidar sesiones
+                            activas tras un cambio de credenciales.</span></li>
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>Usar
+                            identificadores no predecibles (UUID) como defensa complementaria, no como control
+                            principal.</span></li>
+                    <li class="flex gap-3"><i class="fas fa-check text-accent mt-1 text-xs"></i><span>Registrar y
+                            monitorear accesos e intentos de acceso a objetos ajenos.</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 06 — Conclusión -->
+        <section id="conclusion" class="py-16">
+            <div class="flex items-baseline gap-3 mb-8">
+                <span class="font-mono text-sm text-accent">06</span>
+                <h2 class="font-display font-semibold text-2xl md:text-3xl text-white">Conclusión</h2>
+            </div>
+
+            <div class="rounded-lg border-l-2 border-accent bg-white/[0.03] p-7 mb-8 max-w-2xl">
+                <p class="text-white/85 leading-relaxed mb-4">
+                    Autenticar a un usuario responde a "¿quién eres?". Autorizarlo responde a "¿puedes
+                    hacer esto, con este recurso?". Son preguntas distintas, y confundirlas es lo que
+                    convirtió un simple ID en la URL en la llave de cualquier cuenta del sistema.
+                </p>
+                <p class="text-white/85 leading-relaxed">
+                    Corregir estos dos hallazgos con controles de autorización a nivel de objeto elimina
+                    de raíz la clase de vulnerabilidad, más allá de cualquier parche puntual.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#cybersecurity</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#pentesting</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#idor</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#brokenaccesscontrol</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#cvss</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#bugbounty</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#ethicalhacking</span>
+                <span
+                    class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">#websecurity</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-8 cursor-zoom-out"
+        onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            onclick="event.stopPropagation()">
+        <button onclick="closeLightbox()"
+            class="absolute top-5 right-5 sm:top-8 sm:right-8 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            aria-label="Cerrar">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+
+    <script>
+        function openLightbox(src, alt) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt || '';
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('hidden');
+            lb.classList.remove('flex');
+            document.getElementById('lightbox-img').src = '';
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 mt-4">
+        <div
+            class="max-w-content mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-white/50">
+                Reporte propio · AzkCore Tech
+            </p>
+            <a href="/index.html"
+                class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> volver al portafolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
