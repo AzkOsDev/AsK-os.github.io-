@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Write-ups — AzkOsDev</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['"IBM Plex Sans"', 'sans-serif'], mono: ['"IBM Plex Mono"', 'monospace'] },
+          colors: { base: '#0B0D10', accent: '#E2703D' },
+          maxWidth: { content: '56rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    body {
+      background: #0B0D10;
+    }
+  </style>
+</head>
+
+<body class="font-body text-white antialiased">
+
+  <div class="border-b border-white/10 bg-base/95 backdrop-blur-md sticky top-0 z-50"
+    style="top:env(safe-area-inset-top,0px)">
+    <div class="max-w-content mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+      <p class="font-mono text-xs text-white/40"><span class="text-white/70">AzkOsDev</span> / write-ups</p>
+      <a href="index.html"
+        class="font-mono text-xs text-white/60 hover:text-accent transition-colors flex items-center gap-2">
+        <i class="fas fa-arrow-left"></i> volver al portafolio
+      </a>
+    </div>
+  </div>
+
+  <!-- Write-ups -->
+  <section id="writeups" class="py-24 border-t border-white/10">
+    <div class="max-w-content mx-auto px-5 sm:px-8">
+      <span class="font-mono text-sm text-accent block mb-3">~/writeups</span>
+      <h2 class="font-display font-semibold text-3xl md:text-4xl text-white mb-14 max-w-xl">
+        Hallazgos documentados
+      </h2>
+
+      <div class="divide-y divide-white/10">
+
+        <div class="py-9 first:pt-0">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fas fa-bug text-lg text-accent"></i>
+            <h3 class="font-display font-semibold text-lg text-white"> <span
+                class="text-red-400 font-semibold">SSRF</span> encadenado con <span
+                class="text-red-400 font-semibold">XSS</span> vía plugin <span
+                class="text-cyan-400 font-semibold">FormCraft</span></h3>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed mb-4 max-w-2xl">
+            Cómo una vulnerabilidad conocida, olvidada en un subdominio de mantenimiento,
+            se convirtió en el punto de entrada para escalar el impacto de una auditoría de seguridad.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">ssrf</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">xss</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">cve-2022-0591</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">wordpress</span>
+          </div>
+          <a href="writeup-ssrf-xss.html"
+            class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5">
+            <i class="fas fa-file-alt"></i> leer write-up
+          </a>
+        </div>
+
+        <div class="py-9">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fas fa-user-lock text-lg text-accent"></i>
+            <h3 class="font-display font-semibold text-lg text-white">Vulnerabilidad <span
+                class="text-red-400 font-semibold">crítica</span> de control de <span
+                class="text-cyan-400 font-semibold">acceso</span> en
+              cuentas y PQRS</h3>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed mb-4 max-w-2xl">
+            Cómo un simple identificador manipulable en la URL permitía tomar el control de
+            cualquier cuenta y leer las PQRS de otros usuarios, sin privilegios especiales.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">idor</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">broken-access-control</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">cvss-9.3</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">account-takeover</span>
+          </div>
+          <a href="idor-writeup.html" class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5">
+            <i class="fas fa-file-alt"></i> leer write-up
+          </a>
+        </div>
+
+        <div class="py-9">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fas fa-mobile-screen-button text-lg text-accent"></i>
+            <h3 class="font-display font-semibold text-lg text-white">De un <span
+                class="text-cyan-400 font-semibold">SMS</span> de phishing a una <span
+                class="text-red-400 font-semibold">SQL Injection</span></h3>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed mb-4 max-w-2xl">
+            Un SMS fraudulento suplantando a una entidad bancaria terminó exponiendo, por sus
+            propias fallas, los datos que había recolectado de sus víctimas.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">sqli</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">phishing</span>
+            <span class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">waf
+              bypass</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">time-based</span>
+          </div>
+          <a href="writeup-phishing-sqli.html"
+            class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5">
+            <i class="fas fa-file-alt"></i> leer write-up
+          </a>
+        </div>
+
+        <div class="py-9 last:pb-0">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fas fa-key text-lg text-accent"></i>
+            <h3 class="font-display font-semibold text-lg text-white">Bypass de <span
+                class="text-cyan-400 font-semibold">OTP</span> por fuerza bruta → <span
+                class="text-red-400 font-semibold">Account Takeover</span>
+            </h3>
+          </div>
+          <p class="text-white/50 text-sm leading-relaxed mb-4 max-w-2xl">
+            Un mecanismo de verificación en dos pasos sin límite de intentos terminó siendo
+            la puerta de entrada para tomar el control de cualquier cuenta.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">otp</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">broken-authentication</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">account-takeover</span>
+            <span
+              class="font-mono text-xs px-2.5 py-1 rounded border border-white/10 bg-white/5 text-white/60">rate-limiting</span>
+          </div>
+          <a href="Write-up-bypass-OTP-(ATO).html"
+            class="font-mono text-xs text-accent hover:underline flex items-center gap-1.5">
+            <i class="fas fa-file-alt"></i> leer write-up
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>
